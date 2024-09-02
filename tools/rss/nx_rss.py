@@ -278,11 +278,11 @@ async def main():
 
     # Generate all RSS feeds
     await asyncio.gather(
-        generate_rss_feed('NX RSS', '/var/www/data/rss_feed.xml', sorted_other_files),
-        generate_rss_feed('NX RSS - Base', '/var/www/data/rss_feed_base.xml', base_files),
-        generate_rss_feed('NX RSS - Updates', '/var/www/data/rss_feed_updates.xml', update_files),
-        generate_rss_feed('NX RSS - DLC', '/var/www/data/rss_feed_dlc.xml', dlc_files),
-        generate_rss_feed('NX RSS - Retro', '/var/www/data/rss_feed_retro.xml', retro_files)
+        generate_rss_feed('NX RSS', '/var/www/data/rss/feed.xml', sorted_other_files),
+        generate_rss_feed('NX RSS - Base', '/var/www/data/rss/feed_base.xml', base_files),
+        generate_rss_feed('NX RSS - Updates', '/var/www/data/rss/feed_updates.xml', update_files),
+        generate_rss_feed('NX RSS - DLC', '/var/www/data/rss/feed_dlc.xml', dlc_files),
+        generate_rss_feed('NX RSS - Retro', '/var/www/data/rss/feed_retro.xml', retro_files)
     )
 
 # Run the main function
