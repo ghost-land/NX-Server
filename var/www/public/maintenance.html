@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Maintenance in Progress">
+    <meta property="og:description" content="Our services are currently down for server migration to improve speeds. Expected completion: July 07, 2024 at 12:00 PM UTC.">
+    <meta property="og:image" content="https://server.domain/icon.png">
+    <meta property="og:url" content="https://nx.server.domain/">
+    <title>Maintenance in Progress</title>
+    <!-- Include FontAwesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #1e1e1e, #323232, #121212, #4a4a4a);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(30, 30, 30, 0.9);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 600px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .container h1 {
+            color: #ff6f61;
+            margin-bottom: 15px;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        .container p {
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 8px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #4fc3f7;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: rgba(51, 51, 51, 0.8);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 15px 0;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #4fc3f7;
+            width: 0%;
+            text-align: center;
+            color: #fff;
+            line-height: 20px;
+            transition: width 0.5s;
+            border-radius: 5px;
+        }
+
+        .language-select {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .flag {
+            cursor: pointer;
+            width: 30px;
+            height: 20px;
+            border-radius: 3px;
+            transition: transform 0.3s ease;
+        }
+
+        .flag:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: #4fc3f7;
+            color: #fff;
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .container h1 {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+
+            .container p {
+                font-size: 14px;
+                margin: 6px 0;
+            }
+
+            .progress-container {
+                margin: 10px 0;
+            }
+
+            .progress-bar {
+                height: 16px;
+                line-height: 16px;
+            }
+
+            .flag {
+                width: 24px;
+                height: 16px;
+            }
+
+            .social-icons {
+                margin-top: 15px;
+                gap: 10px;
+            }
+
+            .social-icons a {
+                width: 36px;
+                height: 36px;
+                line-height: 36px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Maintenance in Progress</h1>
+        <p id="end-date"><span class="highlight">END of maintenance:</span> December 24, 2050 at 12:00 PM UTC</p>
+        <p id="reason"><span class="highlight">REASON:</span> Server migration to improve speeds</p>
+        <div class="progress-container">
+            <div id="progress-bar" class="progress-bar">0%</div>
+        </div>
+        <div class="language-select">
+            <img src="https://flagcdn.com/w20/gb.png" alt="English" class="flag" onclick="changeLanguage('en')">
+            <img src="https://flagcdn.com/w20/fr.png" alt="French" class="flag" onclick="changeLanguage('fr')">
+            <img src="https://flagcdn.com/w20/es.png" alt="Spanish" class="flag" onclick="changeLanguage('es')">
+            <img src="https://flagcdn.com/w20/de.png" alt="German" class="flag" onclick="changeLanguage('de')">
+            <img src="https://flagcdn.com/w20/it.png" alt="Italian" class="flag" onclick="changeLanguage('it')">
+            <img src="https://flagcdn.com/w20/pt.png" alt="Portuguese" class="flag" onclick="changeLanguage('pt')">
+            <img src="https://flagcdn.com/w20/ru.png" alt="Russian" class="flag" onclick="changeLanguage('ru')">
+            <img src="https://flagcdn.com/w20/jp.png" alt="Japanese" class="flag" onclick="changeLanguage('ja')">
+        </div>
+        <div class="social-icons">
+            <!--<a href="https://x.com/" target="_blank" title="x">
+                <i class="fab fa-twitter"></i>
+            </a>-->
+            <!--<a href="https://github.com/" target="_blank" title="GitHub">
+                <i class="fab fa-github"></i>
+            </a>-->
+            <a href="https://t.me/" target="_blank" title="Telegram">
+                <i class="fab fa-telegram"></i>
+            </a>
+            <a href="https://discord.gg/" target="_blank" title="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                title: "Maintenance in Progress",
+                endDate: "END of maintenance: July 07, 2024 at 12:00 PM UTC",
+                reason: "REASON: Server migration to improve speeds"
+            },
+            fr: {
+                title: "Maintenance en cours",
+                endDate: "FIN de la maintenance : 07 Juillet 2024 à 12h UTC",
+                reason: "RAISON : Migration des serveurs pour améliorer les vitesses"
+            },
+            es: {
+                title: "Mantenimiento en curso",
+                endDate: "FIN del mantenimiento: 07 de Julio de 2024 a las 12:00 PM UTC",
+                reason: "RAZÓN: Migración de servidores para mejorar la velocidad"
+            },
+            de: {
+                title: "Wartung läuft",
+                endDate: "ENDE der Wartung: 07. Juli 2024 um 12:00 Uhr UTC",
+                reason: "GRUND: Servermigration zur Verbesserung der Geschwindigkeiten"
+            },
+            it: {
+                title: "Manutenzione in corso",
+                endDate: "FINE della manutenzione: 07 Luglio 2024 alle 12:00 UTC",
+                reason: "MOTIVO: Migrazione dei server per migliorare le velocità"
+            },
+            pt: {
+                title: "Manutenção em andamento",
+                endDate: "FIM da manutenção: 07 de Julho de 2024 às 12:00 UTC",
+                reason: "RAZÃO: Migração de servidores para melhorar a velocidade"
+            },
+            ru: {
+                title: "Проводится техническое обслуживание",
+                endDate: "ЗАВЕРШЕНИЕ обслуживания: 07 июля 2024 г. в 12:00 UTC",
+                reason: "ПРИЧИНА: Миграция серверов для улучшения скорости"
+            },
+            ja: {
+                title: "メンテナンス中",
+                endDate: "メンテナンス終了: 2024年7月7日 12:00 UTC",
+                reason: "理由: サーバー移行で速度向上"
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.getElementById('title').innerText = translations[lang].title;
+            document.getElementById('end-date').innerHTML = `<span class="highlight">${translations[lang].endDate.split(': ')[0]}:</span> ${translations[lang].endDate.split(': ')[1]}`;
+            document.getElementById('reason').innerHTML = `<span class="highlight">${translations[lang].reason.split(': ')[0]}:</span> ${translations[lang].reason.split(': ')[1]}`;
+        }
+
+        function updateProgressBar() {
+            const startDate = new Date('January 01, 2000 00:00:00 UTC');
+            const endDate = new Date('December 24, 2050 12:00:00 UTC');
+            const now = new Date();
+
+            const totalDuration = endDate - startDate;
+            const elapsedDuration = now - startDate;
+            const progress = (elapsedDuration / totalDuration) * 100;
+
+            const progressBar = document.getElementById('progress-bar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.min(progress.toFixed(2), 100) + '%';
+
+            if (progress < 100) {
+                requestAnimationFrame(updateProgressBar);
+            }
+        }
+
+        function detectLanguage() {
+            const userLang = navigator.language || navigator.userLanguage;
+            const langCode = userLang.split('-')[0]; // Get the language code part
+            if (translations[langCode]) {
+                changeLanguage(langCode);
+            } else {
+                changeLanguage('en'); // Default to English if the language is not in translations
+            }
+        }
+
+        detectLanguage();
+        updateProgressBar();
+    </script>
+</body>
+</html>
