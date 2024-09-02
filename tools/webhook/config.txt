@@ -1,0 +1,3 @@
+https://example1.rss;https://example1.webhook
+https://example2.rss;https://example2.webhook
+https://example3.rss;https://example3.webhook
