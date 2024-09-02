@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+  <channel>
+    <title>NX RSS - Retro</title>
+    <link>https://nx.server.domain/</link>
+    <description>RSS feed for nx rss - retro</description>
+    <docs>http://www.rssboard.org/rss-specification</docs>
+    <generator>python-feedgen</generator>
+    <lastBuildDate>Mon, 02 Sep 2024 03:37:15 +0000</lastBuildDate>
+  </channel>
+</rss>
