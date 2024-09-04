@@ -1,6 +1,21 @@
 RewriteEngine On
 
-# Redirect all requests without the correct 'HAUTH' header to your nx domain
+# Disable directory browsing
+Options -Indexes
+
+# Block access to sensitive files
+<FilesMatch "(^\.htaccess|\.htpasswd|config\.php|db\.php|\.env)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Redirect all requests to /content/ and its subdirectories without the correct 'HAUTH' header
+RewriteCond %{REQUEST_URI} ^/content [NC]
+RewriteCond %{HTTP:HAUTH} !=___________YOUR_HAUTH___________
+RewriteCond %{HTTP_HOST} !=nx.server.domain
+RewriteRule ^ http://nx.server.domain [R=301,L]
+
+# Redirect all requests without the correct 'HAUTH' header globally to your nx domain
 RewriteCond %{HTTP:HAUTH} !=___________YOUR_HAUTH___________
 RewriteCond %{HTTP_HOST} !=nx.server.domain
 RewriteRule ^ http://nx.server.domain [R=301,L]
@@ -16,6 +31,12 @@ ErrorDocument 404 http://nx.server.domain
 # Redirect 500 Internal Server Error to your nx domain
 ErrorDocument 500 http://nx.server.domain
 
+# Redirect other errors (e.g., 401 Unauthorized, 502 Bad Gateway, etc.) to your nx domain
+ErrorDocument 401 http://nx.server.domain
+ErrorDocument 502 http://nx.server.domain
+ErrorDocument 503 http://nx.server.domain
+ErrorDocument 504 http://nx.server.domain
+
 # Allow access to index.php initially
 RewriteCond %{REQUEST_URI} ^/$
 RewriteRule ^ /index.php [L]
@@ -25,8 +46,7 @@ RewriteCond %{REQUEST_URI} ^/index\.tfl$
 RewriteCond %{HTTP:HAUTH} !=___________YOUR_HAUTH___________
 RewriteRule ^ - [F]
 
-# Redirect other errors (e.g., 401 Unauthorized, 502 Bad Gateway, etc.) to your nx domain
-ErrorDocument 401 http://nx.server.domain
-ErrorDocument 502 http://nx.server.domain
-ErrorDocument 503 http://nx.server.domain
-ErrorDocument 504 http://nx.server.domain
+# Prevent image hotlinking
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^https?://(www\.)?nx\.server\.domain [NC]
+RewriteRule \.(jpg|jpeg|png|gif|bmp)$ - [F,NC,L]
