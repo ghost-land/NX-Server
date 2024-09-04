@@ -99,8 +99,10 @@ try:
             game_entry["releaseDate"] = game_data["releaseDate"]
         if "version" in game_data:
             game_entry["version"] = game_data["version"]
-        if "description" in game_data:
+        if "description" in game_data and game_data["description"] is not None:
             game_entry["description"] = game_data["description"].replace("\n", " ")
+        else:
+            game_entry["description"] = ""
         if "publisher" in game_data:
             game_entry["publisher"] = game_data["publisher"]
         if "region" in game_data:
