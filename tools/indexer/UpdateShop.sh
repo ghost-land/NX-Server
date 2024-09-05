@@ -7,11 +7,24 @@ python3 encrypt.py --zstd -k public.key -i index.json -o index.tfl
 # Remove the games.json file
 rm "index.json"
 
-# Remove the existing games.tfl file
+# Define the paths
 tlf_path="/var/www/public/index.tfl"
-if [ -e "$tlf_path" ]; then
-    rm "$tlf_path"
-fi
+new_tlf_path="index.tfl"
 
-# Move the new games.tfl file to the target directory
-mv -f "index.tfl" "$tlf_path"
+# Check if the new file was created successfully
+if [ -e "$new_tlf_path" ]; then
+    # Move the existing file to a temporary backup location first
+    if [ -e "$tlf_path" ]; then
+        mv "$tlf_path" "${tlf_path}.bak"
+    fi
+
+    # Move the new file to the target directory
+    mv "$new_tlf_path" "$tlf_path"
+
+    # Remove the backup if the new file was moved successfully
+    if [ $? -eq 0 ]; then
+        rm -f "${tlf_path}.bak"
+    fi
+else
+    echo "New index.tfl file not found, operation aborted."
+fi
