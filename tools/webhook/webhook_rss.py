@@ -2,7 +2,6 @@ import asyncio
 import aiohttp
 import xml.etree.ElementTree as ET
 import os
-import re
 import logging
 import json
 from bs4 import BeautifulSoup
@@ -20,7 +19,7 @@ max_embeds_per_request = 10
 initial_wait_time = 1
 max_wait_time = 60
 
-GREEN_COLOR = 0x00FF00  # Green color for availability
+ORANGE_COLOR = 0xFFA500  # Orange color for base games
 
 async def fetch_rss_feed(session, url):
     """Fetch RSS feed content from a given URL."""
@@ -43,36 +42,27 @@ def parse_rss_feed(rss_content):
             pub_date = item.find('pubDate').text if item.find('pubDate') is not None else 'Unknown Date'
             link = item.find('link').text if item.find('link') is not None else None
             
-            # Extract and clean content from <content:encoded> or <description>
+            # Check if <content:encoded> exists, otherwise fallback to <description>
             content_encoded = item.find('{http://purl.org/rss/1.0/modules/content/}encoded')
             description = item.find('description').text if item.find('description') is not None else ''
             
+            # Use content_encoded if available, otherwise use description
             if content_encoded is not None:
-                content_encoded_text = BeautifulSoup(content_encoded.text, 'html.parser').get_text()
-                description = content_encoded_text.strip()
+                content = str(content_encoded.text)
             else:
-                description = BeautifulSoup(description, 'html.parser').get_text().strip()
+                content = str(description)
             
-            if not description:
-                description = "No description available."
+            # Replace <br> tags with newlines
+            content = content.replace('<br>', '\n').strip()
             
-            # Extract other fields from the description text or encoded content
-            title_id_match = re.search(r"Title ID:\s*([0-9A-Z]+)", description)
-            size_match = re.search(r"Size:\s*([\d\.]+\s\w+)", description)
-            version_match = re.search(r"Version:\s*v?([\d]+)", description)
-            type_match = re.search(r"Type:\s*([\w\s\[\]]+)", description)
-            format_match = re.search(r"Format:\s*([\w]+)", description)
-
+            if not content:
+                content = "No content available."
+            
             items.append({
                 'title': title,
                 'pubDate': pub_date,
-                'content': description,
-                'link': link,
-                'title_id': title_id_match.group(1) if title_id_match else 'N/A',
-                'size': size_match.group(1) if size_match else 'N/A',
-                'version': version_match.group(1) if version_match else 'N/A',
-                'type': type_match.group(1) if type_match else 'N/A',
-                'format': format_match.group(1) if format_match else 'N/A'
+                'content': content,
+                'link': link
             })
     except ET.ParseError as e:
         logging.error(f"Failed to parse RSS feed: {e}")
@@ -104,24 +94,19 @@ def save_sent_items(file_path, sent_items):
 def create_embed(item):
     """Create a single embed dictionary from an item."""
     
-    # Properly formatted description with line breaks
-    description = (f"Title: {item['title']}\n"
-                   f"Title ID: {item['title_id']}\n"
-                   f"Size: {item['size']}\n"
-                   f"Version: {item['version']}\n"
-                   f"Type: {item['type']}\n"
-                   f"Format: {item['format']}\n")
+    # Use the literal content from the feed
+    description = item['content']
 
     # Determine the type of content (Update, DLC, Base)
     if "Update" in item['title']:
         title_prefix = "🟢 Update Available"
-        color = 7506394  # Green color for updates
+        color = ORANGE_COLOR
     elif "DLC" in item['title']:
         title_prefix = "🟢 New DLC Available"
-        color = 7506394  # Green color for DLCs
+        color = ORANGE_COLOR
     else:
         title_prefix = "🟢 New Game Available"
-        color = 7506394  # Green color for base games
+        color = ORANGE_COLOR
 
     # Enhanced formatting for the embed
     embed = {
@@ -146,6 +131,7 @@ async def send_to_guilded(session, webhook_url, items, sent_items):
     wait_time = initial_wait_time
 
     masked_webhook_url = f"{webhook_url[:30]}...{webhook_url[-10:]}"
+
     logging.info(f"Sending data to webhook: {masked_webhook_url}")
 
     for i in range(0, len(items), max_embeds_per_request):
