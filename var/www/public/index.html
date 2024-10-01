@@ -1,153 +1,210 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to NX Server</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    
+    <title>NX DOMAIN - Ghost Land Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
     <!-- Description & Favicon -->
-    <meta name="description" content="Welcome to your NX server. Configure your hauth settings in .htaccess and index.php for Tinfoil support.">
-    <link rel="icon" href="https://server.domain/icon.png" type="image/x-icon">
+    <meta name="description" content="This domain is the property of Ghost Land Team. We provide a safe, secure, and innovative digital space for all users.">
+    <link rel="icon" href="https://domain.at/gland.png" type="image/x-icon">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Welcome to NX Server">
-    <meta property="og:description" content="Welcome to your NX server. Configure your hauth settings in .htaccess and index.php for Tinfoil support.">
-    <meta property="og:image" content="https://server.domain/icon.png">
-    <meta property="og:url" content="https://nx.server.domain/">
+    <meta property="og:title" content="NX DOMAIN - Ghost Land Team">
+    <meta property="og:description" content="This domain is the property of Ghost Land Team. We provide a safe, secure, and innovative digital space for all users.">
+    <meta property="og:image" content="https://domain.at/gland.png">
+    <meta property="og:url" content="https://nx.domain.at">
     <meta property="og:type" content="website">
 
     <style>
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
+            background: linear-gradient(-45deg, #1e1e1e, #323232, #121212, #4a4a4a);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
             color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            line-height: 1.6;
             margin: 0;
             padding: 20px;
-            box-sizing: border-box;
         }
         .container {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(30, 30, 30, 0.9);
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            max-width: 500px;
-            width: 100%;
-            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
-        h1 {
+        h1, h2 {
+            text-align: center;
             color: #4fc3f7;
-            font-size: 1.8em;
         }
-        p {
+        .beta-disclaimer {
+            text-align: center;
+            color: #fbc02d;
+            font-size: 1.2em;
             margin-top: 10px;
-            color: #ffffff;
-            font-size: 1em;
+            font-weight: bold;
+        }
+        a {
+            color: #4fc3f7;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #81d4fa;
+        }
+        .core-values {
+            margin-top: 20px;
+        }
+        .value {
+            background-color: rgba(46, 46, 46, 0.8);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+        .value:hover {
+            transform: translateX(10px);
         }
         .footer {
             text-align: center;
-            margin-top: auto;
-            padding: 10px;
-            background-color: rgba(30, 30, 30, 0.9);
-            width: 100%;
-            position: fixed;
-            bottom: 0;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+        .tinfoil-instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(60, 60, 60, 0.8);
+            border-radius: 10px;
+        }
+        .config-box {
+            background-color: rgba(40, 40, 40, 0.9);
+            border: 2px solid #4fc3f7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
             display: flex;
-            justify-content: center;
-            padding: 10px 0;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
-        .flag {
-            width: 30px;
-            height: auto;
+        .config-details {
+            list-style: none;
+            padding: 0;
+            margin-right: 20px;
+            flex: 1;
+        }
+        .config-details li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .config-details li i {
+            color: #4fc3f7;
+            margin-right: 8px;
+        }
+        .config-details li strong {
+            color: #81d4fa;
+        }
+        .config-details li span {
+            color: #fff;
+        }
+        .notice {
+            max-width: 300px;
+            border-left: 2px solid #4fc3f7;
+            padding-left: 15px;
+            color: #fbc02d;
+            flex: 1;
+        }
+
+        /* Social Media Links */
+        .social-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .social-links a {
             margin: 0 10px;
-            cursor: pointer;
-            transition: transform 0.2s;
+            color: #4fc3f7;
+            font-size: 1.5em;
         }
-        .flag:hover {
-            transform: scale(1.1);
-        }
-
-        /* Responsive styles */
-        @media (max-width: 600px) {
-            .container {
-                max-width: 90%;
-                padding: 15px;
-            }
-            h1 {
-                font-size: 1.5em;
-            }
-            p {
-                font-size: 0.9em;
-            }
-            .footer {
-                padding: 5px 0;
-            }
-            .flag {
-                width: 25px;
-                margin: 0 5px;
-            }
+        .social-links a:hover {
+            color: #81d4fa;
         }
 
-        @media (min-width: 601px) and (max-width: 1024px) {
-            .container {
-                max-width: 80%;
-                padding: 20px;
-            }
-            h1 {
-                font-size: 1.6em;
-            }
-            p {
-                font-size: 0.95em;
-            }
+        /* Style for the video */
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 id="welcomeMessage">Welcome to your NX Server</h1>
-        <p id="instructions">Ensure that your <strong>hauth</strong> settings are configured in your <strong>.htaccess</strong> file and also in your <strong>index.php</strong> to work with Tinfoil.</p>
+        <h1 id="title">NX DOMAIN</h1>
+
+        <!-- NX Trailer with sound and loop, no controls -->
+        <div class="video-container">
+            <video id="video" src="https://cdn.domain.at/NXTRAILER.mp4" autoplay loop muted></video>
+        </div>
+
+        <!-- Tinfoil Instructions Section -->
+        <div class="tinfoil-instructions">
+            <h2><i class="fas fa-cog"></i> Tinfoil Configuration</h2>
+            <p>To connect to the <strong>NX Server</strong> using <strong>Tinfoil</strong>, please configure your settings as follows:</p>
+
+            <div class="config-box">
+                <ul class="config-details">
+                    <li><i class="fas fa-network-wired"></i> <strong>Protocol:</strong> <span>HTTPS</span></li>
+                    <li><i class="fas fa-server"></i> <strong>Host:</strong> <span>nx.domain.at</span></li>
+                    <li><i class="fas fa-folder-open"></i> <strong>Path:</strong> <span>/</span></li>
+                    <li><i class="fas fa-store"></i> <strong>Title:</strong> <span>NX Server</span></li>
+                </ul>
+                <div class="notice">
+                    ⚠️ Please note: If you encounter any issues or have trouble connecting, please refer to our <a href="https://wiki.domain.at/docs/nx" target="_blank">wiki documentation</a> for additional information. The wiki also provides answers to frequently asked questions regarding the service.
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media Links -->
+        <div class="social-links">
+            <a href="https://t.me/" title="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://x.com/" title="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="https://reddit.com/" title="Reddit"><i class="fab fa-reddit"></i></a>
+        </div>
+
+        <div class="footer">
+            <p id="copyright">
+                &copy; NX Team - 2020-<span id="currentYear"></span><br>
+                <i class="fas fa-server"></i> Hosted by Ghost Land Team
+            </p>
+        </div>
     </div>
 
-    <div class="footer">
-        <img src="https://flagcdn.com/w20/gb.png" class="flag" alt="English" onclick="changeLanguage('en')" title="English">
-        <img src="https://flagcdn.com/w20/fr.png" class="flag" alt="Français" onclick="changeLanguage('fr')" title="Français">
-        <img src="https://flagcdn.com/w20/es.png" class="flag" alt="Español" onclick="changeLanguage('es')" title="Español">
-        <img src="https://flagcdn.com/w20/jp.png" class="flag" alt="日本語" onclick="changeLanguage('ja')" title="日本語">
-    </div>
+    <script type="85d5949269201b4dd50d100d-text/javascript">
+        // Automatically set the current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-    <script>
-        const translations = {
-            "en": {
-                "welcomeMessage": "Welcome to your NX Server",
-                "instructions": "Ensure that your <strong>hauth</strong> settings are configured in your <strong>.htaccess</strong> file and also in your <strong>index.php</strong> to work with Tinfoil."
-            },
-            "fr": {
-                "welcomeMessage": "Bienvenue sur votre serveur NX",
-                "instructions": "Assurez-vous que vos paramètres <strong>hauth</strong> sont configurés dans votre fichier <strong>.htaccess</strong> et également dans votre <strong>index.php</strong> pour fonctionner avec Tinfoil."
-            },
-            "es": {
-                "welcomeMessage": "Bienvenido a su servidor NX",
-                "instructions": "Asegúrese de que la configuración de <strong>hauth</strong> esté configurada en su archivo <strong>.htaccess</strong> y también en su <strong>index.php</strong> para que funcione con Tinfoil."
-            },
-            "ja": {
-                "welcomeMessage": "NXサーバーへようこそ",
-                "instructions": "<strong>hauth</strong>の設定が<strong>.htaccess</strong>ファイルと<strong>index.php</strong>に設定されていることを確認してください。Tinfoilと連携させるためです。"
-            }
-        };
-
-        function changeLanguage(language) {
-            document.getElementById('welcomeMessage').innerHTML = translations[language]['welcomeMessage'];
-            document.getElementById('instructions').innerHTML = translations[language]['instructions'];
-        }
-
-        // Initialize page with default language
-        changeLanguage('en');
+        // Ensure the video plays with sound after user interaction (click anywhere on the page)
+        const video = document.getElementById('video');
+        window.addEventListener('click', () => {
+            video.muted = false;
+            video.play();
+        });
     </script>
 </body>
 </html>
