@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags and links -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NX RETRO SHOP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- Description & Favicon -->
+    <meta name="description" content="A Retro Shop for Nintendo Switch">
+    <link rel="icon" href="https://ghosteshop.com/icon.png" type="image/x-icon">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Ghost eShop RETRO NX">
+    <meta property="og:description" content="A Retro Shop for Nintendo Switch">
+    <meta property="og:image" content="https://ghosteshop.com/icon.png">
+    <meta property="og:url" content="https://nx.ghostland.at">
+    <meta property="og:type" content="website">
+
+    <style>
+        /* Your existing CSS code */
+        @keyframes gradientBackground {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(-45deg, #1e1e1e, #323232, #121212, #4a4a4a);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: #ffffff;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(30, 30, 30, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            color: #4fc3f7;
+        }
+
+        .tinfoil-instructions {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(60, 60, 60, 0.8);
+            border-radius: 10px;
+        }
+
+        .config-box {
+            background-color: rgba(40, 40, 40, 0.9);
+            border: 2px solid #4fc3f7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .config-details {
+            list-style: none;
+            padding: 0;
+            margin-right: 20px;
+            flex: 1;
+        }
+
+        .config-details li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .config-details li i {
+            color: #4fc3f7;
+            margin-right: 8px;
+        }
+
+        .config-details li strong {
+            color: #81d4fa;
+        }
+
+        .config-details li span {
+            color: #fff;
+        }
+
+        .notice {
+            max-width: 300px;
+            border-left: 2px solid #4fc3f7;
+            padding-left: 15px;
+            color: #fbc02d;
+            flex: 1;
+        }
+
+        /* Consoles and Games List */
+        .consoles {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+
+        .console {
+            background-color: rgba(46, 46, 46, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .console:hover {
+            transform: translateY(-10px);
+        }
+
+        .console img {
+            width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            color: #4fc3f7;
+            font-size: 1.8em;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #81d4fa;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            color: #fff;
+            border-radius: 15px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Console and Games List */
+        .game-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+
+        .game-list li {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: rgba(46, 46, 46, 0.9);
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .game-list li span {
+            font-weight: bold;
+            color: #81d4fa;
+            margin-left: 10px;
+        }
+
+        /* Responsive styles for small screens */
+        @media screen and (max-width: 600px) {
+            .consoles {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .game-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 id="title">NX DOMAIN</h1>
+
+        <!-- Tinfoil instructions section -->
+        <div class="tinfoil-instructions">
+            <h2><i class="fas fa-cog"></i> Tinfoil Configuration</h2>
+            <p>To connect to the <strong>Ghost eShop RETRO</strong> using <strong>Tinfoil</strong>, please configure your settings as follows:</p>
+
+            <div class="config-box">
+                <ul class="config-details">
+                    <li><i class="fas fa-network-wired"></i> <strong>Protocol:</strong> <span>HTTPS</span></li>
+                    <li><i class="fas fa-server"></i> <strong>Host:</strong> <span>nx-retro.ghostland.at</span></li>
+                    <li><i class="fas fa-folder-open"></i> <strong>Path:</strong> <span>/</span></li>
+                    <li><i class="fas fa-store"></i> <strong>Title:</strong> <span>Ghost eShop RETRO</span></li>
+                </ul>
+                <div class="notice">
+                    ⚠️ Please note: If you encounter issues or connection difficulties, please check our <a href="https://wiki.ghosteshop.com/docs/category/nx--nintendo-switch" target="_blank">wiki documentation</a> for more information. The wiki also provides answers to frequently asked questions regarding the service.
+                </div>
+            </div>
+        </div>
+
+        <!-- Console list section -->
+        <div class="consoles" id="console-list">
+            <!-- Consoles and games will be generated here -->
+        </div>
+
+        <!-- Social links -->
+        <div class="social-links">
+            <a href="https://t.me/ghosteshop" title="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://x.com/GhosteShop" title="Twitter ('X')"><i class="fab fa-twitter"></i></a>
+            <a href="https://reddit.com/r/ghosteshop/" title="Reddit"><i class="fab fa-reddit"></i></a>
+            <a href="https://mastodon.social/@ghosteshop" title="Mastodon"><i class="fa-brands fa-mastodon"></i></a>
+        </div>
+
+        <div class="footer">
+            <p id="copyright">
+                &copy; Ghost eShop Team - 2020-<span id="currentYear"></span><br>
+                <i class="fas fa-server"></i> Hosted by Ghost Land Team
+            </p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="gameModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="consoleName"></h2>
+            <ul class="game-list" id="gameList">
+                <!-- Game list will be generated here -->
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // Automatically set the current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Fetch console and game data from a local file
+        fetch('https://cdn.ghosteshop.com/other/nx-retro/data/games.json')  // Local path
+            .then(response => response.json())
+            .then(data => {
+                initializeConsoleList(data);
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+            });
+
+        function initializeConsoleList(consoleData) {
+            const consoleList = document.getElementById('console-list');
+            Object.keys(consoleData).forEach(consoleKey => {
+                const consoleInfo = consoleData[consoleKey];
+                const consoleElement = document.createElement('div');
+                consoleElement.classList.add('console');
+                consoleElement.dataset.consoleKey = consoleKey;
+
+                const imgElement = document.createElement('img');
+                imgElement.src = `https://cdn.ghosteshop.com/other/nx-retro/img/${consoleKey}.png`; // Local path to icons
+                imgElement.alt = `${consoleInfo.name} Icon`;
+
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = consoleInfo.name;
+
+                // Add the number of games
+                const gameCountElement = document.createElement('p');
+                gameCountElement.textContent = `(${consoleInfo.games.length} games)`;
+                gameCountElement.style.color = '#81d4fa';
+                gameCountElement.style.marginTop = '10px';
+
+                consoleElement.appendChild(imgElement);
+                consoleElement.appendChild(titleElement);
+                consoleElement.appendChild(gameCountElement);
+                consoleList.appendChild(consoleElement);
+
+                // Event to open the modal with the game list
+                consoleElement.addEventListener('click', () => {
+                    openModal(consoleKey, consoleData);
+                });
+            });
+        }
+
+        // Modal management
+        const modal = document.getElementById('gameModal');
+        const closeModalBtn = document.querySelector('.close');
+        const consoleNameElement = document.getElementById('consoleName');
+        const gameListElement = document.getElementById('gameList');
+
+        function openModal(consoleKey, consoleData) {
+            const consoleInfo = consoleData[consoleKey];
+            consoleNameElement.textContent = `${consoleInfo.name} (${consoleInfo.games.length} games)`;
+
+            // Clear the game list
+            gameListElement.innerHTML = '';
+
+            // Populate the game list
+            consoleInfo.games.forEach((game, index) => {
+                const gameItem = document.createElement('li');
+                gameItem.textContent = game;
+
+                // Add game number
+                const gameNumber = document.createElement('span');
+                gameNumber.textContent = `#${index + 1}`;
+                gameItem.appendChild(gameNumber);
+
+                gameListElement.appendChild(gameItem);
+            });
+
+            modal.style.display = 'flex'; // Show the modal
+        }
+
+        closeModalBtn.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
