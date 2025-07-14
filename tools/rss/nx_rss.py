@@ -19,9 +19,6 @@ base_url = 'https://nx.server.domain/'
 # File extensions to monitor
 extensions_to_watch = {'.nsp', '.xci', '.nsz', '.xcz'}
 
-# Cache file path
-description_cache_file = 'description_cache.json'
-
 def format_size(size_bytes):
     """Convert bytes to a human-readable string."""
     for unit in ['B', 'KiB', 'MiB', 'GiB', 'TiB']:
@@ -59,42 +56,6 @@ def get_game_info(file_name):
         # Extract full DLC name from filename if it contains additional details
         full_name = base_name.strip()
         return full_name, title_id, version, file_format
-
-def load_description_cache():
-    """Load the description cache from a file."""
-    if os.path.exists(description_cache_file):
-        with open(description_cache_file, 'r') as file:
-            return json.load(file)
-    return {}
-
-def save_description_cache(cache):
-    """Save the description cache to a file."""
-    with open(description_cache_file, 'w') as file:
-        json.dump(cache, file)
-
-async def get_game_description(title_id, session, cache):
-    """Get the game description from Tinfoil.io using the title ID, with caching."""
-    if title_id in cache:
-        logging.info(f"Description for {title_id} found in cache.")
-        return cache[title_id]
-
-    url = f"https://tinfoil.io/Title/{title_id}"
-    try:
-        logging.info(f"Fetching description for {title_id} from {url}.")
-        async with session.get(url) as response:
-            if response.status == 200:
-                content = await response.text()
-                soup = BeautifulSoup(content, 'html.parser')
-                meta_description = soup.find('meta', {'property': 'og:description'})
-                if meta_description and 'content' in meta_description.attrs:
-                    description = meta_description['content']
-                    cache[title_id] = description
-                    save_description_cache(cache)
-                    logging.info(f"Description for {title_id} retrieved successfully.")
-                    return description
-    except aiohttp.ClientError as e:
-        logging.error(f"Failed to fetch description for {title_id}: {e}")
-    return None
 
 def collect_files(directory_path):
     """Collect files from directory and subdirectories."""
@@ -146,18 +107,24 @@ def ensure_directory_exists(path):
         os.makedirs(directory)
 
 async def fetch_icon(session, adjusted_title_id, retries=3, delay=1):
-    """Attempt to fetch the icon with retries and back-off."""
-    icon_url = f"https://tinfoil.media/ti/{adjusted_title_id}/256/256/"
+    """Attempt to fetch the icon with retries and back-off, using GET instead of HEAD."""
+    icon_url = f"https://api.nlib.cc/nx/{adjusted_title_id}/icon/256/256/"
+
     for attempt in range(retries):
         try:
-            async with session.head(icon_url) as response:
+            async with session.get(icon_url) as response:
                 if response.status == 200:
                     return icon_url
         except aiohttp.ClientError as e:
-            logging.error(f"Failed to fetch icon for {adjusted_title_id} (Attempt {attempt+1}): {e}")
-            if attempt < retries - 1:
-                await asyncio.sleep(delay)
-                delay *= 2  # Exponential back-off
+            logging.error(f"Client error while fetching icon for {adjusted_title_id}: {e}")
+        except Exception as e:
+            logging.error(f"Unexpected error for {adjusted_title_id}: {e}")
+
+        if attempt < retries - 1:
+            await asyncio.sleep(delay)
+            delay *= 2  # Exponential back-off
+
+    logging.error(f"Failed to fetch icon for {adjusted_title_id} after {retries} attempts.")
     return None
 
 def extract_dlc_title(full_name):
@@ -201,7 +168,6 @@ async def process_file(file_path, session, cache, feed_generator):
     fe.title(game_name)
 
     if title_id:
-        description = await get_game_description(title_id, session, cache)
         info = (f"Game: {game_name}<br>"
                 f"Title ID: {title_id}<br>"
                 f"Size: {format_size(size)}<br>"
@@ -210,9 +176,6 @@ async def process_file(file_path, session, cache, feed_generator):
                 f"Format: {file_format}")
         
         fe.content(content=info, type='html')
-        
-        if description:
-            fe.description(description)
     else:
         # Handle case where title_id is None
         info = (f"File: {file_name}<br>"
@@ -243,10 +206,8 @@ async def generate_rss_feed(title, path, files):
     fg.generator('python-feedgen')
     fg.lastBuildDate(time.strftime('%a, %d %b %Y %H:%M:%S +0000', time.gmtime()))
 
-    description_cache = load_description_cache()
-
     async with aiohttp.ClientSession() as session:
-        tasks = [process_file(file, session, description_cache, fg) for file in files]
+        tasks = [process_file(file, session, {}, fg) for file in files]
         await asyncio.gather(*tasks)
 
     # Ensure the directory exists
@@ -257,7 +218,6 @@ async def generate_rss_feed(title, path, files):
     logging.info(f"RSS feed written to {rss_file_path}.")
 
 async def main():
-    description_cache = load_description_cache()
 
     current_files = collect_files(directory_path)
     logging.info(f"Found {len(current_files)} files in directory and subdirectories.")
@@ -265,15 +225,17 @@ async def main():
     forwarder_files = {f: mtime for f, mtime in current_files.items() if 'forwarders' in f.split(os.sep)}
     other_files = {f: mtime for f, mtime in current_files.items() if 'forwarders' not in f.split(os.sep)}
 
-    sorted_forwarder_files = sorted(forwarder_files.keys(), key=lambda x: forwarder_files[x], reverse=True)[:250]
-    sorted_other_files = sorted(other_files.keys(), key=lambda x: other_files[x], reverse=True)[:250]
+    # Limit forwarders to 150 files
+    sorted_forwarder_files = sorted(forwarder_files.keys(), key=lambda x: forwarder_files[x], reverse=True)[:150]
+    
+    # Limit other files to 600 for the general flow
+    sorted_other_files = sorted(other_files.keys(), key=lambda x: other_files[x], reverse=True)[:600]
 
-    logging.info(f"Selected {len(sorted_forwarder_files)} forwarder files and {len(sorted_other_files)} other files.")
-
-    base_files = [f for f in sorted_other_files if 'update' not in determine_type(f).lower() and 'dlc' not in determine_type(f).lower()]
-    update_files = [f for f in sorted_other_files if 'update' in determine_type(f).lower()]
-    dlc_files = [f for f in sorted_other_files if 'dlc' in determine_type(f).lower()]
-
+    # Limit each category to 150 files
+    base_files = [f for f in sorted_other_files if 'update' not in determine_type(f).lower() and 'dlc' not in determine_type(f).lower()][:150]
+    update_files = [f for f in sorted_other_files if 'update' in determine_type(f).lower()][:150]
+    dlc_files = [f for f in sorted_other_files if 'dlc' in determine_type(f).lower()][:150]
+    
     retro_files = sorted_forwarder_files
 
     # Generate all RSS feeds
